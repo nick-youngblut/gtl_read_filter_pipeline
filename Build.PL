@@ -3,6 +3,12 @@ use strict;
 use warnings FATAL => 'all';
 use Module::Build;
 
+# loading bin scripts #
+opendir IN, "./bin/" or die $!;
+my @binfiles = readdir IN;
+my @binscripts = grep(/.pl$/, @binfiles);
+@binscripts = map{$_ = "./bin/" . $_} @binscripts;
+
 my $builder = Module::Build->new(
     module_name         => 'gtl_read_filter_pipeline',
     license             => 'perl',
@@ -17,6 +23,7 @@ my $builder = Module::Build->new(
     },
     add_to_cleanup     => [ 'gtl_read_filter_pipeline-*' ],
     create_makefile_pl => 'traditional',
+    script_files => \@binscripts
 );
 
 $builder->create_build_script();

@@ -98,7 +98,15 @@ do{ my $x = [
          'pm_files' => undef,
          'quiet' => undef,
          'extra_compiler_flags' => [],
-         'script_files' => undef,
+         'script_files' => [
+                             './bin/fastaqsplit_fast.pl',
+                             './bin/fastq2sqlite.pl',
+                             './bin/illuminaPairChecker.pl',
+                             './bin/rand_cat.pl',
+                             './bin/shuffleSequences.pl',
+                             './bin/sqlite2fastq.pl',
+                             './bin/unshuffleSequences.pl'
+                           ],
          'build_script' => 'Build',
          'original_prefix' => {},
          'c_source' => undef,
