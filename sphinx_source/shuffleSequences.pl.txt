@@ -1,0 +1,22 @@
+shuffleSequences.pl
+===================
+
+Usage:
+ shuffleSequences.pl [-f] file1 file2 > output
+Options:
+ -f 	Format of files (fastq or fasta).
+    	 [fastq]
+Description:
+ The script shuffles Illumina paired-end read
+ files (1 file per end) into 1 file.
+
+ tar.gz & tgz files can be used.
+ 
+ Fastq format (ASCII offset) doesn't matter.
+Notes:
+ * Version: 0.3
+ * Last Modified: 11/7/12 7:47 PM
+ * Author: Nick Youngblut
+Categories:
+ * Genome assembly
+ 

@@ -1,0 +1,22 @@
+unshuffleSequences.pl
+=====================
+
+Usage:
+ shuffleSequences.pl [-p] [-f] < input > output
+Options:
+ -f 	Format of files (fastq or fasta).
+    	 [fastq]
+ -p 	Output file prefix.
+    	 [unshuf]
+Description:
+ The script unshuffles Illumina paired-end read
+ files. 
+ Reads are assumed to be in order with all pairs
+ intact.
+Notes:
+ * Version: 0.2.1
+ * Last Modified: 9/18/12 9:33 AM
+ * Author: Nick Youngblut
+Categories:
+ * Genome assembly
+ 

@@ -1,0 +1,13 @@
+Nick's Script Documentation
+===========================
+Contents:
+
+.. toctree::
+	:maxdepth: 2
+	:titlesonly:
+	
+	unshuffleSequences.pl
+	illuminaPairChecker.pl
+	shuffleSequences.pl
+	sqlite2fastq.pl
+	fastq2sqlite.pl

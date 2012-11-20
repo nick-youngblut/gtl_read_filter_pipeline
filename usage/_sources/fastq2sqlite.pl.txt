@@ -1,0 +1,21 @@
+fastq2sqlite.pl
+===============
+
+Usage:
+  fastq2sqlite.pl [-v] -d < shuffled.fq
+Options:
+  -v 	Show database loading errors? [TRUE]
+  -d 	Name of database to make.
+Description:
+  The script makes an sqlite3 database from
+  a fastq of shuffled paired-end reads.
+
+  Any number of random reads can then be written
+  from the database using 'sqlite2fastq.pl'
+  
+Notes:
+ * Version: 0.7
+ * Last Modified: 11/10/12 8:38 AM
+ * Author: Nick Youngblut
+Categories:
+	

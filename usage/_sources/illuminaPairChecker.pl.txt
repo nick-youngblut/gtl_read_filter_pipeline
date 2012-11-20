@@ -1,0 +1,16 @@
+illuminaPairChecker.pl
+======================
+
+Usage:
+ illuminaPairChecker.pl < file.fq > file.fq
+Description:
+ Input must be a shuffled fastq file.
+ Paired reads output to STDOUT.
+
+Notes:
+ * Version: 0.3
+ * Last Modified: 10/30/12 9:58 PM
+ * Author: Nick Youngblut
+Categories:
+ * Genome assembly
+ 

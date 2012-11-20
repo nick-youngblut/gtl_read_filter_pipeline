@@ -1,0 +1,25 @@
+sqlite2fastq.pl
+===============
+
+Usage:
+  sqlite2fastq.pl [-c] [-u] [-r] -n -p -d
+Options:
+  -c 	Just count number of reads in DB & exit.
+  -u 	Unshuffle reads?  [TRUE]
+  -r  	Randomly draw pairs from DB?  [TRUE]
+  -n 	Number of pairs of reads to write. 
+     	Multiple values accepted.
+  -p 	Output file prefix.
+  -d 	Database file name.
+Description:
+  Get specified numbers of pairs of randomly drawn
+  reads from a sqlite3 database created with 'fastq2sqlite.pl'
+  
+  Number of reads added output file names. 
+  Using fisher-yates shuffle for randomizing.
+Notes:
+ * Version: 0.7
+ * Last Modified: 10/30/12 8:46 PM
+ * Author: Nick Youngblut
+Categories:
+ * Genome assembly
