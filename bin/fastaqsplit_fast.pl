@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 my $mod = "9/18/12 10:11 PM";
 my $version = "0.5";
 my $author = "Nick Youngblut";
