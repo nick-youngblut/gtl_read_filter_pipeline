@@ -1,7 +1,4 @@
-#!/opt/local/bin/perl 
-
-eval 'exec /opt/local/bin/perl  -S $0 ${1+"$@"}'
-    if 0; # not running under some shell
+#!/usr/bin/env perl
 my $mod = "11/7/12 7:47 PM";
 my $version = "0.3";
 my $author = "Nick Youngblut";
@@ -46,12 +43,18 @@ sub shuffleSequences{
 	if(-B $ARGV[0] and $ARGV[0] =~ /tgz$|tar.gz$/){		# if file is compressed
 		open(IN1, "-|", "zcat $ARGV[0] | tar  -O -xf -") or die $!;
 		}
+	elsif(-B $ARGV[0] and $ARGV[0] =~ /.gz$/){			# if file is gzipped
+		open(IN1, "-|", "zcat $ARGV[0]") or die $!;
+		}
 	else{
 		open IN1, $ARGV[0] or die $!;
 		}
 	
-	if(-B $ARGV[1] and $ARGV[1] =~ /tgz$|tar.gz$/){		# if file is compressed
+	if(-B $ARGV[1] and $ARGV[1] =~ /tgz$|tar.gz$/){		# if file is tar & gz
 		open(IN2, "-|", "zcat $ARGV[1] | tar  -O -xf -") or die $!;
+		}
+	elsif(-B $ARGV[1] and $ARGV[1] =~ /.gz$/){			# if file is gzipped
+		open(IN2, "-|", "zcat $ARGV[1]") or die $!;
 		}
 	else{ 
 		open IN2, $ARGV[1] or die $!;

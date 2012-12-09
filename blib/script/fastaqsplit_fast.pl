@@ -1,7 +1,4 @@
-#!/opt/local/bin/perl 
-
-eval 'exec /opt/local/bin/perl  -S $0 ${1+"$@"}'
-    if 0; # not running under some shell
+#!/usr/bin/env perl
 my $mod = "9/18/12 10:11 PM";
 my $version = "0.5";
 my $author = "Nick Youngblut";

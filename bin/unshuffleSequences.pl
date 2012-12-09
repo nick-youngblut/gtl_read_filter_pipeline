@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 my $mod = "9/18/12 9:33 AM";
 my $version = "0.2.1";
 my $author = "Nick Youngblut";
@@ -18,10 +18,11 @@ use File::Spec;
 my ($error);
 
 ### I/O
-my ($format, $prefix);
+my ($format, $prefix, $gzip_bool);
 GetOptions(
 	   "prefix=s" => \$prefix,
 	   "format=s" => \$format,
+	   "gzip" => \$gzip_bool,
 	   "help|?" => \&usage # Help
 	   );
 
@@ -30,16 +31,22 @@ $format = "fastq" if ! $format;
 $prefix = "unshuf" if ! $prefix;
 
 ### Routing main subroutines
-unshuffleSequences($format, $prefix);
+unshuffleSequences($format, $prefix, $gzip_bool);
 
 #----------------------Subroutines----------------------#
 sub unshuffleSequences{
 	### shuffling 2 sequence files together ###
-	my ($format, $prefix) = @_;
+	my ($format, $prefix, $gzip_bool) = @_;
 	
 	if($format =~ /fastq|fq|fnq/i){		#fastq
-		open OUT1, ">$prefix\_1.fq" or die $!;
-		open OUT2, ">$prefix\_2.fq" or die $!;
+		if($gzip_bool){
+			open OUT1, "| gzip > $prefix\_1.fq.gz" or die $!;
+			open OUT2, "| gzip > $prefix\_2.fq.gz" or die $!;
+			}
+		else{
+			open OUT1, ">$prefix\_1.fq" or die $!;
+			open OUT2, ">$prefix\_2.fq" or die $!;
+			}
 		my $line;
 		while(<>){
 			print OUT1 $_;
@@ -55,8 +62,14 @@ sub unshuffleSequences{
 		
 		}
 	elsif($format =~ /fasta|fa|fna/i){		# fasta
-		open OUT1, ">$prefix\_1.fa" or die $!;
-		open OUT2, ">$prefix\_2.fa" or die $!;
+		if($gzip_bool){
+			open OUT1, "| gzip > $prefix\_1.fa.gz" or die $!;
+			open OUT2, "| gzip > $prefix\_2.fa.gz" or die $!;		
+			}
+		else{
+			open OUT1, ">$prefix\_1.fa" or die $!;
+			open OUT2, ">$prefix\_2.fa" or die $!;
+			}
 		my $line;
 		while(<>){
 			print OUT1 $_;
@@ -85,17 +98,16 @@ sub error_routine{
 sub usage {
  my $usage = <<HERE;
 Usage:
- shuffleSequences.pl [-p] [-f] < input > output
+ shuffleSequences.pl [-p] [-f] < input
 Options:
- -f 	Format of files (fastq or fasta).
-    	 [fastq]
- -p 	Output file prefix.
-    	 [unshuf]
+ -f 	Format of files (fastq or fasta). [fastq]
+ -g 	Gzip output? [FALSE]
+ -p 	Output file prefix. [unshuf]
 Description:
  The script unshuffles Illumina paired-end read
  files. 
  Reads are assumed to be in order with all pairs
- intact.
+ intact (check this with illuminaPairChecker.pl).
 Notes:
  Version: $version
  Last Modified: $mod
