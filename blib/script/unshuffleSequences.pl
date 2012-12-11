@@ -40,10 +40,14 @@ sub unshuffleSequences{
 	
 	if($format =~ /fastq|fq|fnq/i){		#fastq
 		if($gzip_bool){
+			check_file("$prefix\_1.fq.gz");
+			check_file("$prefix\_2.fq.gz");
 			open OUT1, "| gzip > $prefix\_1.fq.gz" or die $!;
 			open OUT2, "| gzip > $prefix\_2.fq.gz" or die $!;
 			}
 		else{
+			check_file("$prefix\_1.fq");
+			check_file("$prefix\_2.fq");
 			open OUT1, ">$prefix\_1.fq" or die $!;
 			open OUT2, ">$prefix\_2.fq" or die $!;
 			}
@@ -63,10 +67,14 @@ sub unshuffleSequences{
 		}
 	elsif($format =~ /fasta|fa|fna/i){		# fasta
 		if($gzip_bool){
+			check_file("$prefix\_1.fa.gz");
+			check_file("$prefix\_2.fq.gz");
 			open OUT1, "| gzip > $prefix\_1.fa.gz" or die $!;
 			open OUT2, "| gzip > $prefix\_2.fa.gz" or die $!;		
 			}
 		else{
+			check_file("$prefix\_1.fa");
+			check_file("$prefix\_2.fa");
 			open OUT1, ">$prefix\_1.fa" or die $!;
 			open OUT2, ">$prefix\_2.fa" or die $!;
 			}
@@ -87,6 +95,10 @@ sub unshuffleSequences{
 	close OUT2;
 	}
 
+sub check_file{
+	my $file = shift;
+	die " ERROR: $file alread exists!\n" if -e $file;
+	}
 
 sub error_routine{
 	my $error = $_[0];
@@ -106,8 +118,11 @@ Options:
 Description:
  The script unshuffles Illumina paired-end read
  files. 
+ 
  Reads are assumed to be in order with all pairs
  intact (check this with illuminaPairChecker.pl).
+ 
+ The script will not overwrite existing files.
 Notes:
  Version: $version
  Last Modified: $mod
