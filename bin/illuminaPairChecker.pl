@@ -18,8 +18,9 @@ use File::Spec;
 my ($error);
 
 ### I/O
-my ($verbose);
+my ($verbose, $single_bool);
 GetOptions(
+	   "single" => \$single_bool,
 	   "verbose" => \$verbose,
 	   "help|?" => \&usage # Help
 	   );
@@ -28,13 +29,13 @@ GetOptions(
 
 
 ### Routing main subroutines
-illuminaPairChecker();
+illuminaPairChecker($single_bool);
 
 #----------------------Subroutines----------------------#
 sub illuminaPairChecker{
 	### Clean up broken pairs ###
+	my $single_bool = shift;
 
-	#open(SINGLE, ">illuminaPairChecker_singles.fq") or die $!;
 	my %check;
 	while(<>){
 		my @tmp;
@@ -60,10 +61,11 @@ sub illuminaPairChecker{
 			}
 		}
 	#print Dumper %check; exit;
-	#foreach (keys %check){	#writing singles
-	#	print SINGLE join("", $_, " ", ${$check{$_}}[0], "\n", @{$check{$_}});
-	#	}
-	#close SINGLE;
+	if($single_bool){
+		foreach (keys %check){	#writing singles
+			print STDERR join("", $_, " ", ${$check{$_}}[0], "\n", @{$check{$_}});
+			}
+		}
 	}
 
 sub error_routine{
@@ -76,7 +78,14 @@ sub error_routine{
 sub usage {
  my $usage = <<HERE;
 Usage:
- illuminaPairChecker.pl < file.fq > file.fq
+ normal use:
+   illuminaPairChecker.pl < file.fq > file.fq
+ writing out singletons:
+   illuminaPairChecker.pl -s < file.fq > file.fq 2> single.fq
+
+Options:
+ -s 	Write singletons to STDERR.
+
 Description:
  Input must be a shuffled fastq file.
  Paired reads output to STDOUT.
