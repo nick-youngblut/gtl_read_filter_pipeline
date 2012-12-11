@@ -63,7 +63,8 @@ sub illuminaPairChecker{
 	#print Dumper %check; exit;
 	if($single_bool){
 		foreach (keys %check){	#writing singles
-			print STDERR join("", $_, " ", ${$check{$_}}[0], "\n", @{$check{$_}});
+			#print Dumper @{$check{$_}}; exit;
+			print STDERR join("", $_, " ", ${$check{$_}}[0], "\n", @{$check{$_}}[1..3]);
 			}
 		}
 	}
