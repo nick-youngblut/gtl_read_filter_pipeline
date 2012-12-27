@@ -73,7 +73,8 @@ do{ my $x = [
                               '/opt/iCORN-v0.97/',
                               '/opt/RAST_api/lib/',
                               '/opt/RepeatMasker/',
-                              '/usr/local/lib/perl/5.14.2/'
+                              '/usr/local/lib/perl/5.14.2/',
+                              '/opt/RAST_api/lib'
                             ],
          'auto_configure_requires' => 1,
          'create_license' => undef,
@@ -115,7 +116,8 @@ do{ my $x = [
                              './bin/fastaqsplit_fast.pl',
                              './bin/unshuffleSequences.pl',
                              './bin/rand_cat.pl',
-                             './bin/fastq2sqlite.pl'
+                             './bin/fastq2sqlite.pl',
+                             './bin/homopolymer_dist.pl'
                            ],
          'build_script' => 'Build',
          'original_prefix' => {},
