@@ -75,6 +75,7 @@ sub shuffleSequences{
 		while(<IN1>){
 			print $_;
 			$_ = <IN1>;
+			print $_;
 			for my $i (0..1){
 				$_ = <IN2>;
 				print $_;
