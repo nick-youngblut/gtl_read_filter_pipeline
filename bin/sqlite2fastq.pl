@@ -168,7 +168,10 @@ sub get_name_num{
 	my %sym = ( 1 => "", 2 => "t", 3 => "m", 4 => "b");
 	my %div = ( 1 => 1, 2 => 1000, 3 => 1000000, 4 => 1000000000);
 	my $val = int((length($num)-1)/3) + 1; 
-	my $name_num = join("", $num/$div{$val}, $sym{$val});
+	$num =  $num/$div{$val};
+	$num = sprintf("%.1f", $num) if int($num) != $num;		# round if decimal
+		
+	my $name_num = join("", $num, $sym{$val});
 		#print Dumper $name_num; exit;
 	return $name_num;
 	}
@@ -203,6 +206,11 @@ Description:
   
   Number of reads added output file names. 
   Using fisher-yates shuffle for randomizing.
+  
+  File naming: 
+  	t = thousand
+  	m = million
+  	b = billion
 Notes:
   Version: $version
   Last Modified: $mod
