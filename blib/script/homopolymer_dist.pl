@@ -53,6 +53,7 @@ sub find_homopolymers{
 	my @pos_cnt;		# position count of homopolymers
 	my $max_read_len = 0;
 	my $read_cnt = 0;
+	my $proc_cnt = 0;
 	while(<>){
 		chomp;
 		die " ERROR: read file not formated in $format format!\n"
@@ -67,8 +68,8 @@ sub find_homopolymers{
 			
 			$read_cnt++;
 			}
-			#$proc_cnt++;
-			#print STDERR " $proc_cnt reads processed\n" if $proc_cnt % 1000 == 0 && $verbose;
+			$proc_cnt++;
+			print STDERR " $proc_cnt reads processed\n" if $proc_cnt % 100000 == 0 && $verbose;
 		}
 	
 	return (\@pos_cnt, $max_read_len, $read_cnt);
@@ -93,6 +94,8 @@ homopolymer_dist.pl [options] < input > output
 =item -f 	Format (fasta | fastq). [fastq]
 
 =item -m 	Minimum homopolymer length. [4]
+
+=item -v 	Verbose output [FALSE]
 
 =item -h	This help message
 

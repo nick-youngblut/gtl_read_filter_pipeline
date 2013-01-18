@@ -141,6 +141,8 @@ homopolymer_dist.pl [options] < input > output
 .PD 0
 .IP "\-m 	Minimum homopolymer length. [4]" 4
 .IX Item "-m 	Minimum homopolymer length. [4]"
+.IP "\-v 	Verbose output [\s-1FALSE\s0]" 4
+.IX Item "-v 	Verbose output [FALSE]"
 .IP "\-h	This help message" 4
 .IX Item "-h	This help message"
 .PD
@@ -177,6 +179,6 @@ This software is licensed under the terms of the GPLv3
 .SH "POD ERRORS"
 .IX Header "POD ERRORS"
 Hey! \fBThe above document had some coding errors, which are explained below:\fR
-.IP "Around line 121:" 4
-.IX Item "Around line 121:"
+.IP "Around line 124:" 4
+.IX Item "Around line 124:"
 You forgot a '=back' before '=head1'
