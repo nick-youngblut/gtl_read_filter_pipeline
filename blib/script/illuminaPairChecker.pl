@@ -29,7 +29,7 @@ GetOptions(
 
 
 ### Routing main subroutines
-illuminaPairChecker($single_bool);
+illuminaPairChecker_hash($single_bool);
 
 #----------------------Subroutines----------------------#
 sub illuminaPairChecker{
@@ -40,6 +40,7 @@ sub illuminaPairChecker{
 	while(<>){
 		my @tmp;
 		if($_ =~ /^\s*@/){@tmp = split(/\s+|#/)};
+		
 		if(exists($check{$tmp[0]})){	# writing pairs
 			my @lines;
 			for(1..3){
@@ -60,7 +61,7 @@ sub illuminaPairChecker{
 			$check{$tmp[0]} = [$tmp[1], @lines];
 			}
 		}
-	#print Dumper %check; exit;
+		
 	if($single_bool){
 		foreach (keys %check){	#writing singles
 			print STDERR join("", $_, " ", ${$check{$_}}[0], "\n", @{$check{$_}}[1..3]);
@@ -87,9 +88,14 @@ Options:
  -s 	Write singletons to STDERR.
 
 Description:
- Input must be a shuffled fastq file.
- Paired reads output to STDOUT.
-
+ Check to see if both mates are in the same fastq file. 
+ Reads are loaded into a hash until the mate is found,
+ so having the reads pairs shuffled will cut down on memory
+ usage and computation time.
+ 
+ Paired reads written to STDOUT.
+ Singleton read written to STDERR (if '-s').
+ 
 Notes:
  Version: $version
  Last Modified: $mod
