@@ -29,7 +29,7 @@ GetOptions(
 
 
 ### Routing main subroutines
-illuminaPairChecker_hash($single_bool);
+illuminaPairChecker($single_bool);
 
 #----------------------Subroutines----------------------#
 sub illuminaPairChecker{

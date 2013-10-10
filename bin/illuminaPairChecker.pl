@@ -39,16 +39,16 @@ sub illuminaPairChecker{
 	my %check;
 	while(<>){
 		my @tmp;
-		if($_ =~ /^\s*@/){@tmp = split(/\s+|#/)};
+		if($_ =~ /^\s*@/){@tmp = split(/\s+|#/)};		# getting read base name
 		
-		if(exists($check{$tmp[0]})){	# writing pairs
+		if(exists($check{$tmp[0]})){					# writing pairs
 			my @lines;
-			for(1..3){
+			for(1..3){									# loading 2nd of pair
 				my $line = <>;
 				push(@lines, $line);
-				}
-			my $pair_num = splice( @{$check{$tmp[0]}},0,1);
-			print join("", $tmp[0], " ", $pair_num, "\n", @{$check{$tmp[0]}});
+				}	
+			my $pair_num = splice( @{$check{$tmp[0]}},0,1);							# getting 1st pair number
+			print join("", $tmp[0], " ", $pair_num, "\n", @{$check{$tmp[0]}});		# writing pair
 			print $_, @lines;			
 			delete $check{$tmp[0]};
 			}
