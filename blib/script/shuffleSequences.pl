@@ -75,6 +75,7 @@ sub shuffleSequences{
 		while(<IN1>){
 			print $_;
 			$_ = <IN1>;
+			print $_;
 			for my $i (0..1){
 				$_ = <IN2>;
 				print $_;
@@ -106,7 +107,7 @@ Description:
  The script shuffles Illumina paired-end read
  files (1 file per end) into 1 file.
 
- tar.gz & tgz files can be used.
+ tar.gz, tgz, & gz files can be used.
  
  Fastq format (ASCII offset) doesn't matter.
 Notes:

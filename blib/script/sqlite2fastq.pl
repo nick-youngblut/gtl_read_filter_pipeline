@@ -39,10 +39,14 @@ die " ERROR: provide an output file prefix ('-p')\n" if ! $prefix && ! $count_bo
 
 ### Routing main subroutines
 my $dbh = make_connection($db_in);
-my $cnt = count_pairs($dbh, \@nums, $count_bool);
+my ($cnt, $nums_r) = count_pairs($dbh, \@nums, $count_bool);
+
+print STDERR " Generating random numbers for DB selection\n";
 my $rand_nums_ref = rand_num_gen(1, $cnt);
-if(! $unshuf) { write_reads_unshuf($dbh, \@nums, $prefix, $random, $rand_nums_ref); }		# if output to seperate read files
-else{ write_reads_shuf($dbh, \@nums, $prefix, $random, $rand_nums_ref); }					# if keeping reads shuffled
+
+print STDERR " Selecting read pairs from DB\n";
+if(! $unshuf) { write_reads_unshuf($dbh, $nums_r, $prefix, $random, $rand_nums_ref); }		# if output to seperate read files
+else{ write_reads_shuf($dbh, $nums_r, $prefix, $random, $rand_nums_ref); }					# if keeping reads shuffled
 $dbh->disconnect();
 
 #----------------------Subroutines----------------------#
@@ -60,6 +64,8 @@ sub rand_num_gen{
 	}
 	
 sub count_pairs{
+	print STDERR " Count number of read pairs in DB\n";
+	
 	### getting a count of number of reads the in db ###
 	my ($dbh, $nums_ref, $count_bool) = @_;
 	my $sth = $dbh->prepare("SELECT count(*) FROM reads"); 
@@ -80,10 +86,16 @@ sub count_pairs{
 	# checking to see if number requested is > than number in DB #
 	my $max_num = max(@$nums_ref);
 	if($max_num > $cnt){
-		$dbh->disconnect();
-		die " ERROR: Cannot select $max_num read pairs. $max_num is > number of reads in DB ($cnt).\n";
+		print STDERR "\n WARNING: max requested read pairs ($max_num) > number of reads in DB ($cnt).\n ### Selecting up to $cnt ###\n\n";
+		
+		map{$_ = $cnt if $_ > $cnt} @$nums_ref;
 		}
-	return $cnt;
+		
+	# reducing to just unique number selections #
+	my %unique;
+	map{ $unique{$_} = 1} @$nums_ref;
+		
+	return $cnt, [keys %unique];
 	}
 
 sub write_reads_unshuf{
@@ -156,7 +168,10 @@ sub get_name_num{
 	my %sym = ( 1 => "", 2 => "t", 3 => "m", 4 => "b");
 	my %div = ( 1 => 1, 2 => 1000, 3 => 1000000, 4 => 1000000000);
 	my $val = int((length($num)-1)/3) + 1; 
-	my $name_num = join("", $num/$div{$val}, $sym{$val});
+	$num =  $num/$div{$val};
+	$num = sprintf("%.1f", $num) if int($num) != $num;		# round if decimal
+		
+	my $name_num = join("", $num, $sym{$val});
 		#print Dumper $name_num; exit;
 	return $name_num;
 	}
@@ -191,6 +206,11 @@ Description:
   
   Number of reads added output file names. 
   Using fisher-yates shuffle for randomizing.
+  
+  File naming: 
+  	t = thousand
+  	m = million
+  	b = billion
 Notes:
   Version: $version
   Last Modified: $mod

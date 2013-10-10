@@ -18,8 +18,9 @@ use File::Spec;
 my ($error);
 
 ### I/O
-my ($verbose);
+my ($verbose, $single_bool);
 GetOptions(
+	   "single" => \$single_bool,
 	   "verbose" => \$verbose,
 	   "help|?" => \&usage # Help
 	   );
@@ -28,17 +29,18 @@ GetOptions(
 
 
 ### Routing main subroutines
-illuminaPairChecker();
+illuminaPairChecker($single_bool);
 
 #----------------------Subroutines----------------------#
 sub illuminaPairChecker{
 	### Clean up broken pairs ###
+	my $single_bool = shift;
 
-	#open(SINGLE, ">illuminaPairChecker_singles.fq") or die $!;
 	my %check;
 	while(<>){
 		my @tmp;
 		if($_ =~ /^\s*@/){@tmp = split(/\s+|#/)};
+		
 		if(exists($check{$tmp[0]})){	# writing pairs
 			my @lines;
 			for(1..3){
@@ -59,11 +61,12 @@ sub illuminaPairChecker{
 			$check{$tmp[0]} = [$tmp[1], @lines];
 			}
 		}
-	#print Dumper %check; exit;
-	#foreach (keys %check){	#writing singles
-	#	print SINGLE join("", $_, " ", ${$check{$_}}[0], "\n", @{$check{$_}});
-	#	}
-	#close SINGLE;
+		
+	if($single_bool){
+		foreach (keys %check){	#writing singles
+			print STDERR join("", $_, " ", ${$check{$_}}[0], "\n", @{$check{$_}}[1..3]);
+			}
+		}
 	}
 
 sub error_routine{
@@ -76,11 +79,23 @@ sub error_routine{
 sub usage {
  my $usage = <<HERE;
 Usage:
- illuminaPairChecker.pl < file.fq > file.fq
-Description:
- Input must be a shuffled fastq file.
- Paired reads output to STDOUT.
+ normal use:
+   illuminaPairChecker.pl < file.fq > file.fq
+ writing out singletons:
+   illuminaPairChecker.pl -s < file.fq > file.fq 2> single.fq
 
+Options:
+ -s 	Write singletons to STDERR.
+
+Description:
+ Check to see if both mates are in the same fastq file. 
+ Reads are loaded into a hash until the mate is found,
+ so having the reads pairs shuffled will cut down on memory
+ usage and computation time.
+ 
+ Paired reads written to STDOUT.
+ Singleton read written to STDERR (if '-s').
+ 
 Notes:
  Version: $version
  Last Modified: $mod
